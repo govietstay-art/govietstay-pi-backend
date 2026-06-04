@@ -1,20 +1,17 @@
 export default function handler(req, res) {
-  const hasPiApiKey = !!process.env.PI_API_KEY;
-  const apiKeyLength = process.env.PI_API_KEY
-    ? process.env.PI_API_KEY.length
-    : 0;
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  res.status(200).json({
-    status: "ok",
-    app: "GoVietStay",
-    environment: "sandbox",
-    message: "GoVietStay Pi backend is running",
-    hasPiApiKey,
-    apiKeyLength,
-    endpoints: {
-      health: "/api/pi-health",
-      approve: "/api/pi-approve",
-      complete: "/api/pi-complete"
-    }
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  return res.status(200).json({
+    ok: true,
+    status: "online",
+    app: "GoVietStay Pi Utility",
+    message: "Backend online — Vercel connected",
+    time: new Date().toISOString()
   });
 }
